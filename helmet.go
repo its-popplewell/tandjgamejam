@@ -33,3 +33,7 @@ func (h Helmet) sell(p *Player, s *Shop) bool {
 	p.gold += h.getCost()
 	return true
 }
+
+func (h Helmet) getAttackModifier() [2]int32 {
+	return [2]int32{0, 0}
+}
