@@ -23,6 +23,7 @@ type Dino struct {
 	Width          int32
 	Height         int32
 	Health         int32
+	MaxHealth      int32
 	Damage         int32
 	Block          int32
 	Speed          int32
@@ -34,14 +35,16 @@ type Dino struct {
 }
 
 func newRandomDino(x int32, y int32, direction int32, isPlayer bool, color rl.Color) Dino {
+	health := rand.Int31n(50) + 50 // Health between 50 and 99
 	return Dino{
 		X:         x,
 		Y:         y,
 		Width:     dinoWidth,
 		Height:    dinoHeight,
-		Health:    rand.Int31n(50) + 50, // Health between 50 and 99
-		Damage:    rand.Int31n(5) + 5,   // dino base dmg
-		Block:     0,                    // block amount, 0 for dinos but helmets add some amount
+		Health:    health,
+		MaxHealth: health,
+		Damage:    rand.Int31n(5) + 5, // dino base dmg
+		Block:     0,                  // block amount, 0 for dinos but helmets add some amount
 		Speed:     1,
 		Direction: direction,
 		isPlayer:  isPlayer,
@@ -82,7 +85,7 @@ func (d Dino) Draw() {
 	// Draw health bar
 	healthBarWidth := d.Width
 	healthBarHeight := int32(10)
-	healthPercentage := float32(d.Health) / 100.0
+	healthPercentage := float32(max(0, d.Health)) / float32(d.MaxHealth)
 	currentHealthBarWidth := int32(float32(healthBarWidth) * healthPercentage)
 
 	rl.DrawRectangle(d.X, d.Y-20, healthBarWidth, healthBarHeight, rl.Red)
