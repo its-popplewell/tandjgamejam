@@ -1,8 +1,11 @@
 package main
 
 type Modifier struct {
-	id   int32
-	cost int32
+	id    int32
+	cost  int32
+	size  int32
+	dmg   int32
+	block int32
 }
 
 func (m Modifier) getId() int32 {
@@ -32,4 +35,8 @@ func (m Modifier) sell(p *Player, s *Shop) bool {
 	s.inventory = append(s.inventory, m)
 	p.gold += m.getCost()
 	return true
+}
+
+func (m Modifier) getAttackModifier() [2]int32 {
+	return [2]int32{m.dmg, m.block}
 }

@@ -1,8 +1,13 @@
 package main
 
 type Helmet struct {
-	id   int32
-	cost int32
+	id         int32
+	cost       int32
+	numHits    int32
+	baseBlock  int32
+	baseDamage int32
+	helmetType string
+	modifiers  HelmetInventory
 }
 
 func (h Helmet) getId() int32 {
@@ -32,4 +37,14 @@ func (h Helmet) sell(p *Player, s *Shop) bool {
 	s.inventory = append(s.inventory, h)
 	p.gold += h.getCost()
 	return true
+}
+
+func (h Helmet) getAttackModifier() [2]int32 {
+	temp := h.modifiers.getAttackModifier()
+	outp := [2]int32{h.baseDamage, h.baseBlock}
+
+	outp[0] += temp[0]
+	outp[1] += temp[1]
+
+	return outp
 }
