@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math/rand"
+)
+
 type Commodity interface {
 	buy(p *Player, s *Shop) bool
 	sell(p *Player, s *Shop) bool
@@ -9,4 +13,40 @@ type Commodity interface {
 
 type Shop struct {
 	inventory []Commodity
+	capacity  int32
+}
+
+func generateShop() Shop {
+	var numItems int32 = 5
+	s := Shop{
+		inventory: []Commodity{},
+		capacity:  numItems,
+	}
+	s.addItemsToShop(3)
+	return s
+}
+
+func (s *Shop) addItemsToShop(numItems int32) {
+	// TODO: add a capacity check
+	for i := range numItems {
+		_ = i
+		comm := rand.Int31n(2)
+		var toAdd Commodity
+		if comm == 0 {
+			toAdd = NewRandomHelmet(1)
+		} else if comm == 1 {
+			toAdd = NewRandomModifier(0)
+		}
+
+		s.inventory = append(s.inventory, toAdd)
+	}
+}
+
+func (s *Shop) removeItemsFromShop(inp Commodity) {
+	DeleteFunc(&s.inventory, func(c Commodity) bool {
+		return (c.getId() == inp.getId())
+	})
+}
+
+func (s *Shop) updateShop() {
 }

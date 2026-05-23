@@ -6,6 +6,14 @@ type HelmetInventory struct {
 	modifiers   []Modifier
 }
 
+func NewHelmetInventory(capacity int32) HelmetInventory {
+	return HelmetInventory{
+		capacity:    capacity,
+		used_volume: 0,
+		modifiers:   []Modifier{},
+	}
+}
+
 func (hi *HelmetInventory) addModifier(toAdd Modifier) bool {
 	if hi.getRemainingCapacity() < toAdd.size {
 		return false

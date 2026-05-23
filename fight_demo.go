@@ -2,7 +2,7 @@ package main
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
-func main() {
+func fightmain() {
 	rl.InitWindow(800, 600, "Dino Fight Demo")
 	defer rl.CloseWindow()
 

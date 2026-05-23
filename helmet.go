@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math/rand"
+)
+
 type Helmet struct {
 	id         int32
 	cost       int32
@@ -8,6 +12,31 @@ type Helmet struct {
 	baseDamage int32
 	helmetType string
 	modifiers  HelmetInventory
+}
+
+func NewHelmet(id, cost, numHits, baseBlock, baseDamage, capacity int32) Helmet {
+	return Helmet{
+		id:         id,
+		cost:       cost,
+		numHits:    numHits,
+		baseBlock:  baseBlock,
+		baseDamage: baseDamage,
+		helmetType: "default",
+		modifiers:  NewHelmetInventory(capacity),
+	}
+}
+
+func NewRandomHelmet(id int32) Helmet {
+	capacity := rand.Int31n(16) + 15 // 15–30 (fits ~5–6 modifiers of avg size 3)
+	return Helmet{
+		id:         id,
+		cost:       rand.Int31n(41) + 10, // 10–50
+		numHits:    rand.Int31n(31) + 20, // 20–50
+		baseBlock:  rand.Int31n(5) + 1,   // 1–5
+		baseDamage: rand.Int31n(4),       // 0–3
+		helmetType: "default",
+		modifiers:  NewHelmetInventory(capacity),
+	}
 }
 
 func (h Helmet) getId() int32 {

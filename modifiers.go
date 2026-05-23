@@ -1,11 +1,35 @@
 package main
 
+import (
+	"math/rand"
+)
+
 type Modifier struct {
 	id    int32
 	cost  int32
 	size  int32
 	dmg   int32
 	block int32
+}
+
+func NewModifier(id, cost, size, dmg, block int32) Modifier {
+	return Modifier{
+		id:    id,
+		cost:  cost,
+		size:  size,
+		dmg:   dmg,
+		block: block,
+	}
+}
+
+func NewRandomModifier(id int32) Modifier {
+	return Modifier{
+		id:    id,
+		cost:  rand.Int31n(20) + 1, // 1–20
+		size:  rand.Int31n(5) + 1,  // 1–5
+		dmg:   rand.Int31n(10),     // 0–9
+		block: rand.Int31n(10),     // 0–9
+	}
 }
 
 func (m Modifier) getId() int32 {
