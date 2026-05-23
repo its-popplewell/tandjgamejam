@@ -7,6 +7,7 @@ import (
 
 type State struct {
 	mode string
+	submode string
 	player Player
 	shop Shop
 }
@@ -42,8 +43,6 @@ func main() {
 
 	rl.SetTargetFPS(60)
 
-	b := NewButton(10, 10, 50, 30, "TEST")
-
 	for !rl.WindowShouldClose() {
 		// LOGIC
 
@@ -62,10 +61,7 @@ func main() {
 			// buy or sell
 			// equpt and upgrade and whatnot
 
-			// b.Draw()
-			if b.Draw() {
-				game.updateState("FIGHT")
-			}
+			drawShop(&game)
 
 			// fmt.Printf("%+v\n", game.shop.inventory)
 			// SENDS TO FIGHT
