@@ -25,10 +25,10 @@ func NewModifier(id, cost, size, dmg, block int32) Modifier {
 func NewRandomModifier(id int32) Modifier {
 	return Modifier{
 		id:    id,
-		cost:  rand.Int31n(20) + 1, // 1–20
-		size:  rand.Int31n(5) + 1,  // 1–5
-		dmg:   rand.Int31n(10),     // 0–9
-		block: rand.Int31n(10),     // 0–9
+		cost:  rand.Int31n(ModifierCostRange) + ModifierMinCost, // 1–20
+		size:  rand.Int31n(ModifierSizeRange) + ModifierMinSize, // 1–5
+		dmg:   rand.Int31n(ModifierDamageRange),                 // 0–9
+		block: rand.Int31n(ModifierBlockRange),                  // 0–9
 	}
 }
 

@@ -31,40 +31,40 @@ type BattleDino struct {
 	KnockbackTimer int32 // how long the "knockback" is applied, i.e. how long they run backwards before they run forwards (in frames)
 }
 
-func newRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color rl.Color) BattleDino {
-	health := rand.Int31n(50) + 50 // Health between 50 and 99
+func NewRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color rl.Color) BattleDino {
+	health := rand.Int31n(EnemyHealthRange) + EnemyMinHealth // Health between 50 and 99
 	return BattleDino{
 		Dino: Dino{
 			Health:    health,
 			MaxHealth: health,
-			Damage:    rand.Int31n(5) + 5, // dino base dmg
-			Block:     0,                  // block amount, 0 for dinos but helmets add some amount
+			Damage:    rand.Int31n(EnemyDamageRange) + EnemyMinDamage, // dino base dmg
+			Block:     0,                                              // block amount, 0 for dinos but helmets add some amount
 			Color:     color,
 		},
 		X:         x,
 		Y:         y,
 		Width:     dinoWidth,
 		Height:    dinoHeight,
-		Speed:     2,
+		Speed:     DefaultDinoSpeed,
 		Direction: direction,
 		isPlayer:  isPlayer,
 	}
 }
 
-func newBattleDino(dino Dino, x int32, y int32, direction int32, isPlayer bool) BattleDino {
+func NewBattleDino(dino Dino, x int32, y int32, direction int32, isPlayer bool) BattleDino {
 	return BattleDino{
 		Dino:      dino,
 		X:         x,
 		Y:         y,
 		Width:     dinoWidth,
 		Height:    dinoHeight,
-		Speed:     2,
+		Speed:     DefaultDinoSpeed,
 		Direction: direction,
 		isPlayer:  isPlayer,
 	}
 }
 
-func (dino BattleDino) Bounds() rl.Rectangle {
+func (dino *BattleDino) Bounds() rl.Rectangle {
 	return rl.Rectangle{
 		X:      float32(dino.X),
 		Y:      float32(dino.Y),
@@ -92,7 +92,7 @@ func (dino Dino) getAttack() [2]int32 {
 	return outp
 }
 
-func (d BattleDino) Draw() {
+func (d *BattleDino) Draw() {
 	rl.DrawRectangle(d.X, d.Y, d.Width, d.Height, d.Color)
 	// Draw health bar
 	healthBarWidth := d.Width
