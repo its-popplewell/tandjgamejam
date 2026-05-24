@@ -10,41 +10,61 @@ const dinoWidth int32 = 50
 const dinoHeight int32 = 100
 
 type Dino struct {
+	Health    int32
+	MaxHealth int32
+	Damage    int32
+	Block     int32
+	Color     rl.Color
+	Helmet    Helmet
+}
+
+// battleDino is a copy of the persistent dino with additional fields for the battle
+type BattleDino struct {
+	Dino
 	X              int32
 	Y              int32
 	Width          int32
 	Height         int32
-	Health         int32
-	MaxHealth      int32
-	Damage         int32
-	Block          int32
-	Speed          int32
+	Speed          int32 // at some point this might become a persistent stat on the dino
 	Direction      int32
 	isPlayer       bool
-	Color          rl.Color
-	KnockbackTimer int32
-	Helmet         Helmet
+	KnockbackTimer int32 // how long the "knockback" is applied, i.e. how long they run backwards before they run forwards (in frames)
 }
 
-func newRandomDino(x int32, y int32, direction int32, isPlayer bool, color rl.Color) Dino {
+func newRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color rl.Color) BattleDino {
 	health := rand.Int31n(50) + 50 // Health between 50 and 99
-	return Dino{
+	return BattleDino{
+		Dino: Dino{
+			Health:    health,
+			MaxHealth: health,
+			Damage:    rand.Int31n(5) + 5, // dino base dmg
+			Block:     0,                  // block amount, 0 for dinos but helmets add some amount
+			Color:     color,
+		},
 		X:         x,
 		Y:         y,
 		Width:     dinoWidth,
 		Height:    dinoHeight,
-		Health:    health,
-		MaxHealth: health,
-		Damage:    rand.Int31n(5) + 5, // dino base dmg
-		Block:     0,                  // block amount, 0 for dinos but helmets add some amount
-		Speed:     1,
+		Speed:     2,
 		Direction: direction,
 		isPlayer:  isPlayer,
-		Color:     color,
 	}
 }
 
-func (dino Dino) Bounds() rl.Rectangle {
+func newBattleDino(dino Dino, x int32, y int32, direction int32, isPlayer bool) BattleDino {
+	return BattleDino{
+		Dino:      dino,
+		X:         x,
+		Y:         y,
+		Width:     dinoWidth,
+		Height:    dinoHeight,
+		Speed:     2,
+		Direction: direction,
+		isPlayer:  isPlayer,
+	}
+}
+
+func (dino BattleDino) Bounds() rl.Rectangle {
 	return rl.Rectangle{
 		X:      float32(dino.X),
 		Y:      float32(dino.Y),
@@ -53,7 +73,7 @@ func (dino Dino) Bounds() rl.Rectangle {
 	}
 }
 
-func (dino *Dino) UpdateMovement() {
+func (dino *BattleDino) UpdateMovement() {
 	if dino.KnockbackTimer > 0 {
 		dino.X -= dino.Speed * dino.Direction
 		dino.KnockbackTimer--
@@ -72,7 +92,7 @@ func (dino Dino) getAttack() [2]int32 {
 	return outp
 }
 
-func (d Dino) Draw() {
+func (d BattleDino) Draw() {
 	rl.DrawRectangle(d.X, d.Y, d.Width, d.Height, d.Color)
 	// Draw health bar
 	healthBarWidth := d.Width

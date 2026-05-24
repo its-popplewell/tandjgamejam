@@ -25,17 +25,11 @@ func defaultPlayer() Player {
 	return Player{
 		gold: 100,
 		dino: Dino{
-			X: 0,
-			Y: 0,
-			Width: 50,
-			Height: 100,
-			Health: 75,
-			Damage: 7,
-			Block: 0,
-			Speed: 0,
-			Direction: 0,
-			isPlayer: true,
-			Color: rl.Yellow,
+			Health:    75,
+			MaxHealth: 75,
+			Damage:    8,
+			Block:     0, // by default dino has no block so they take full damage
+			Color:     rl.Yellow,
 		},
 	}
 }
