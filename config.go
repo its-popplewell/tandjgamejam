@@ -88,21 +88,7 @@ const (
 	StatPanelBlockX        = 110
 
 	// --- Shop UI ---
-	ShopBGPadding     = 40
-	ShopTitleX        = 24
-	ShopTitleY        = 24
-	ShopTitleFontSize = 32
-	ShopFightButtonX  = 24
-	ShopFightButtonY  = 72
-	ShopFightButtonW  = 120
-	ShopFightButtonH  = 42
-	ShopTabY          = 24
-	ShopTabW          = 100
-	ShopTabH          = 30
-	ShopBuyTabXOff    = 136
-	ShopEquipTabXOff  = 246
-	ShopGuiBottomPad  = 40
-	ShopGuiSideWidth  = 250
+	ShopBGPadding = 40
 
 	// --- Button ---
 	ButtonFontSize    = 20
