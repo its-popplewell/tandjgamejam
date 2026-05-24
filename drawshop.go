@@ -125,7 +125,8 @@ func (s *ShopGui) Draw() {
 	}
 }
 
-func drawShop(state *State) {
+func drawShop(state *State) GameAction {
+	action := ActionNone
 
 	switch state.submode {
 	case BUY:
@@ -142,7 +143,7 @@ func drawShop(state *State) {
 
 		fightButton := NewButton(24, 72, 120, 42, "Fight")
 		if fightButton.Draw() {
-			state.updateState(FIGHT)
+			action = ActionOpenFight
 		}
 
 	case EQUIP:
@@ -168,9 +169,11 @@ func drawShop(state *State) {
 	equipTab := NewButton(800-246, 24, 100, 30, "Equip")
 
 	if buyTab.Draw() {
-		state.submode = BUY
+		action = ActionShowBuy
 	}
 	if equipTab.Draw() {
-		state.submode = EQUIP
+		action = ActionShowEquip
 	}
+
+	return action
 }

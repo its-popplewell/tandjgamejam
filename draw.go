@@ -1,15 +1,16 @@
 package main
 
-func draw(state *State) {
+func draw(state *State) GameAction {
 	switch state.mode {
 	case START:
-		// drawStart(state)
-		state.updateState(SHOP)
+		return ActionNone
 	case SHOP:
-		drawShop(state)
+		return drawShop(state)
 	case FIGHT:
-		drawFight(state)
+		return drawFight(state)
 	case END:
 		drawEnd(state)
 	}
+
+	return ActionNone
 }

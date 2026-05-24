@@ -7,6 +7,7 @@ import (
 
 type GameState string
 type SubGameState string
+type GameAction string
 
 const (
 	START GameState = "START"
@@ -20,6 +21,14 @@ const (
 	FIGHTRUNNING SubGameState = "RUNNING"
 	FIGHTRESULT  SubGameState = "RESULT"
 	EMPTY        SubGameState = "EMPTY"
+
+	ActionNone       GameAction = ""
+	ActionOpenFight  GameAction = "OPEN_FIGHT"
+	ActionStartFight GameAction = "START_FIGHT"
+	ActionFightAgain GameAction = "FIGHT_AGAIN"
+	ActionGoShop     GameAction = "GO_SHOP"
+	ActionShowBuy    GameAction = "SHOW_BUY"
+	ActionShowEquip  GameAction = "SHOW_EQUIP"
 )
 
 type Vec2 = rl.Vector2
@@ -96,8 +105,10 @@ func main() {
 
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
-		draw(&game)
+		action := draw(&game)
 		rl.EndDrawing()
+
+		handleAction(&game, action)
 	}
 
 	// for !rl.WindowShouldClose() {
