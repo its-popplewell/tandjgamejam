@@ -2,34 +2,52 @@ package main
 
 import (
 	// "fmt";
-	rl "github.com/gen2brain/raylib-go/raylib";
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+type Vec2 = rl.Vector2
+
 type State struct {
-	mode string
-	submode string
-	player Player
-	shop Shop
+	mode       string
+	submode    string
+	player     Player
+	shop       Shop
+	windowSize [2]int32
 }
 
 func newState() State {
 	return State{
-		mode: "START",
-		player: defaultPlayer(),
-		shop: generateShop(),
+		mode:       "START",
+		submode:    "EMPTY",
+		player:     defaultPlayer(),
+		shop:       generateShop(),
+		windowSize: [2]int32{800, 600},
 	}
 }
 
 func (self *State) updateState(newMode string) bool {
-	if (self.mode == "START") {
-
-	} else if (self.mode == "END") {
-
-	} else if (self.mode == "SHOP") {
-
-	} else if (self.mode == "FIGHT") {
-
+	if self.mode == "START" {
+		if newMode != "SHOP" {
+			return false
+		}
+		self.submode = "BUY"
+	} else if self.mode == "END" {
+		return false
+	} else if self.mode == "SHOP" {
+		if newMode != "FIGHT" {
+			return false
+		}
+		self.submode = "START"
+	} else if self.mode == "FIGHT" {
+		if newMode == "END" {
+			self.submode = "EMPTY"
+		} else if newMode == "SHOP" {
+			self.submode = "BUY"
+		} else {
+			return false
+		}
 	}
+
 	self.mode = newMode
 	return true
 }
@@ -38,7 +56,7 @@ func main() {
 	// fightmain()
 
 	game := newState()
-	rl.InitWindow(800, 600, "Dino Game")
+	rl.InitWindow(game.windowSize[0], game.windowSize[1], "Dino Game")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(60)
@@ -99,7 +117,6 @@ func main() {
 
 		rl.EndDrawing()
 	}
-
 
 	// for continueGame {
 	// 	if game.mode == "START" {

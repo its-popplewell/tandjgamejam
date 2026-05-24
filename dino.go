@@ -1,14 +1,6 @@
 package main
 
 import (
-	// "fmt"
-	// "io"
-	// "log"
-	// "net/http"
-	// "os"
-	// "path/filepath"
-	// "sort"
-	// "time"
 	"math/rand"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
