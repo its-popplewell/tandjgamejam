@@ -35,7 +35,7 @@ func NewPanel(x, y, width, height float32) Panel {
 
 // Draw renders the background panel
 func (p *Panel) Draw() {
-	segments := int32(16)
+	segments := int32(32)
 
 	// Fill
 	rl.DrawRectangleRounded(p.Rect, p.Style.Roundness, segments, p.Style.BgColor)

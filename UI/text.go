@@ -88,7 +88,7 @@ func NewParagraph(text string, x, y, width, height float32) Paragraph {
 func (p *Paragraph) Draw() {
 	// 1. Draw Background (if not completely transparent)
 	if p.Style.BgColor.A > 0 {
-		segments := int32(16)
+		segments := int32(32)
 		rl.DrawRectangleRounded(p.Rect, p.Style.Roundness, segments, p.Style.BgColor)
 
 		if p.Style.BorderWidth > 0 {

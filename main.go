@@ -83,6 +83,9 @@ func main() {
 	// fightmain()
 
 	game := NewState()
+
+	rl.SetConfigFlags(rl.FlagMsaa4xHint)
+
 	rl.InitWindow(game.windowSize[0], game.windowSize[1], "Dino Game")
 	defer rl.CloseWindow()
 
