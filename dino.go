@@ -37,6 +37,8 @@ func NewRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color
 			Damage:    rand.Int31n(EnemyDamageRange) + EnemyMinDamage, // dino base dmg
 			Block:     0,                                              // block amount, 0 for dinos but helmets add some amount
 			Color:     color,
+			// TODO: update this helmet generation
+			Helmet:    NewRandomHelmet(0), // 0 is for helmet, 1 is for modifier 
 		},
 		X:         x,
 		Y:         y,
