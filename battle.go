@@ -13,29 +13,31 @@ import (
 )
 
 type Battle struct {
-	PlayerDino Dino
-	EnemyDino  Dino
-	HitTimer   int32
+	PlayerDino         BattleDino
+	EnemyDino          BattleDino
+	StartingPlayerDino Dino
+	HitTimer           int32
 }
 
-func newBattle() Battle {
+func newBattle(playerDino Dino) Battle {
 	screenWidth := int32(rl.GetScreenWidth())
 	groundY := getGroundY()
 	dinoY := groundY - dinoHeight
 
-	PlayerDino := newRandomDino(screenWidth/4-dinoWidth/2, dinoY, 1, true, rl.Green)
-	EnemyDino := newRandomDino(screenWidth*3/4-dinoWidth/2, dinoY, -1, false, rl.Blue)
+	PlayerDino := newBattleDino(playerDino, screenWidth/4-dinoWidth/2, dinoY, 1, true)
+	EnemyDino := newRandomBattleDino(screenWidth*3/4-dinoWidth/2, dinoY, -1, false, rl.Blue)
 
 	return Battle{
-		PlayerDino: PlayerDino,
-		EnemyDino:  EnemyDino,
-		HitTimer:   0,
+		PlayerDino:         PlayerDino,
+		EnemyDino:          EnemyDino,
+		StartingPlayerDino: playerDino,
+		HitTimer:           0,
 	}
 }
 
 func (battle *Battle) Update() {
 	if rl.IsKeyPressed(rl.KeyR) || restartButtonPressed() {
-		*battle = newBattle()
+		*battle = newBattle(battle.StartingPlayerDino)
 		return
 	}
 
@@ -120,7 +122,7 @@ func getGroundY() int32 {
 	return int32(rl.GetScreenHeight()) - 120
 }
 
-func drawStatPanel(x int32, y int32, label string, d Dino) {
+func drawStatPanel(x int32, y int32, label string, d BattleDino) {
 	panelWidth := int32(220)
 	panelHeight := int32(130)
 	attack := d.getAttack()
@@ -135,7 +137,7 @@ func drawStatPanel(x int32, y int32, label string, d Dino) {
 	rl.DrawText(fmt.Sprintf("SPEED: %d", d.Speed), x+12, y+104, 16, rl.White)
 }
 
-func drawPanelHealthBar(x int32, y int32, width int32, height int32, d Dino) {
+func drawPanelHealthBar(x int32, y int32, width int32, height int32, d BattleDino) {
 	healthPercentage := float32(max(0, d.Health)) / float32(d.MaxHealth)
 	currentWidth := int32(float32(width) * healthPercentage)
 

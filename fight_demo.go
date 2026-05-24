@@ -8,7 +8,7 @@ func fightmain() {
 
 	rl.SetTargetFPS(60)
 
-	battle := newBattle()
+	battle := newBattle(defaultPlayer().dino)
 
 	for !rl.WindowShouldClose() {
 		battle.Update()
