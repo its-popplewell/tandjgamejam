@@ -17,12 +17,12 @@ type Shop struct {
 }
 
 func generateShop() Shop {
-	var numItems int32 = 5
+	var numItems int32 = ShopCapacity
 	s := Shop{
 		inventory: []Commodity{},
 		capacity:  numItems,
 	}
-	s.addItemsToShop(3)
+	s.addItemsToShop(ShopStartingItems)
 	return s
 }
 

@@ -27,13 +27,13 @@ func NewHelmet(id, cost, numHits, baseBlock, baseDamage, capacity int32) Helmet 
 }
 
 func NewRandomHelmet(id int32) Helmet {
-	capacity := rand.Int31n(16) + 15 // 15–30 (fits ~5–6 modifiers of avg size 3)
+	capacity := rand.Int31n(HelmetCapacityRange) + HelmetMinCapacity // 15–30 (fits ~5–6 modifiers of avg size 3)
 	return Helmet{
 		id:         id,
-		cost:       rand.Int31n(41) + 10, // 10–50
-		numHits:    rand.Int31n(31) + 20, // 20–50
-		baseBlock:  rand.Int31n(5) + 1,   // 1–5
-		baseDamage: rand.Int31n(4),       // 0–3
+		cost:       rand.Int31n(HelmetCostRange) + HelmetMinCost,       // 10–50
+		numHits:    rand.Int31n(HelmetNumHitsRange) + HelmetMinNumHits, // 20–50
+		baseBlock:  rand.Int31n(HelmetBlockRange) + HelmetMinBlock,     // 1–5
+		baseDamage: rand.Int31n(HelmetDamageRange),                     // 0–3
 		helmetType: "default",
 		modifiers:  NewHelmetInventory(capacity),
 	}

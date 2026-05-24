@@ -65,4 +65,40 @@ model note:
 - because hits are collision-based, more knockback may slow both dinos' next attack by increasing the time before they collide again, so it may be a tempo tradeoff instead of a simple upgrade
 
 
+# JACK END OF DAY (it is morning rip):
+Got lots of good stuffs done.
+I have not switched as much to float32s as I would like, but I am starting to.
+I am building a UI package within our package -- I should ask Tushar to start using.
+## I have gotten a good bit into Shop UI:
+- [x] Draw out buying
+- [ ] Draw out equipping
+- [x] Build round rectangles and whatnot
+- [ ] Choose and download a font (or choose to keep default)
+- [ ] Build mockup of buying
+- [ ] Build mockup of equipping
+- [ ] add colors to config
 
+## What I did for refactoring:
+- I split up updating functions and draw functions -- draw should avoid changing a state (except with buttons)
+- I added to our UI utils
+- I simplified our main loop and built out separate update and draw functions which manage all of the state nonsense
+- **||WIP||** I created a config.go file (thanks AI) which has constants for all the "magic numbers" we have (this will make play testing and tuning a breeze)
+- I added types for the various states and substates of the state machine instead of consts (better type checking)
+- Standardized some names and whatnot
+- [ ] Add more rl types (vectors and shtuff)
+- [ ] Add errors for functions which can fail (easier debugging down the line)
+
+## Planning to do:
+- [ ] Add types for helmets (come up with set of elements)
+- [ ] Weigh helmet attributes based type and a level (generate cost based on that)
+- [ ] Create a pool of modifiers to pull from
+- [ ] Add path/movement stuff (queue of dinos?)
+    - Battleheart like, where certain encounters can happen which will unlock entire upgrade paths?
+    - Shards and a build system? Just modifiers to pick up? 
+    - I want negative powerups with interesting synergies (hard for planning)
+- [ ] ART ART ART
+- [ ] do more design stuff in general, have a theme
+- [ ] scale enemy generation with number of consecutive fights
+- [ ] add drops and gold from fights which also scale ^
+- [ ] add a player level (how should this work)
+    - [ ] scale the generation of stuff / unlock certain stuff with level

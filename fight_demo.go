@@ -8,7 +8,7 @@ func fightmain() {
 
 	rl.SetTargetFPS(60)
 
-	battle := newBattle(defaultPlayer().dino)
+	battle := NewBattle(defaultPlayer().dino)
 
 	for !rl.WindowShouldClose() {
 		battle.Update()
@@ -16,7 +16,8 @@ func fightmain() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 
-		battle.Draw()
+		// battle.Draw()
+		drawBattle(&battle)
 
 		rl.EndDrawing()
 	}

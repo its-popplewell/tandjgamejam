@@ -23,12 +23,12 @@ func (p Player) amountGold() int32 {
 
 func defaultPlayer() Player {
 	return Player{
-		gold: 100,
+		gold: PlayerStartGold,
 		dino: Dino{
-			Health:    75,
-			MaxHealth: 75,
-			Damage:    8,
-			Block:     0, // by default dino has no block so they take full damage
+			Health:    PlayerStartHealth,
+			MaxHealth: PlayerStartMaxHealth,
+			Damage:    PlayerStartDamage,
+			Block:     PlayerStartBlock, // by default dino has no block so they take full damage
 			Color:     rl.Yellow,
 		},
 	}
