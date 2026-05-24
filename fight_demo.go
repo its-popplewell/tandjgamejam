@@ -3,10 +3,10 @@ package main
 import rl "github.com/gen2brain/raylib-go/raylib"
 
 func fightmain() {
-	rl.InitWindow(800, 600, "Dino Fight Demo")
+	rl.InitWindow(WindowWidth, WindowHeight, FightDemoWindowTitle)
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(TargetFPS)
 
 	battle := NewBattle(defaultPlayer().dino)
 

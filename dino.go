@@ -6,9 +6,6 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-const dinoWidth int32 = 50
-const dinoHeight int32 = 100
-
 type Dino struct {
 	Health    int32
 	MaxHealth int32
@@ -43,8 +40,8 @@ func NewRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color
 		},
 		X:         x,
 		Y:         y,
-		Width:     dinoWidth,
-		Height:    dinoHeight,
+		Width:     DinoWidth,
+		Height:    DinoHeight,
 		Speed:     DefaultDinoSpeed,
 		Direction: direction,
 		isPlayer:  isPlayer,
@@ -56,8 +53,8 @@ func NewBattleDino(dino Dino, x int32, y int32, direction int32, isPlayer bool) 
 		Dino:      dino,
 		X:         x,
 		Y:         y,
-		Width:     dinoWidth,
-		Height:    dinoHeight,
+		Width:     DinoWidth,
+		Height:    DinoHeight,
 		Speed:     DefaultDinoSpeed,
 		Direction: direction,
 		isPlayer:  isPlayer,
@@ -90,16 +87,4 @@ func (dino Dino) getAttack() [2]int32 {
 	outp[1] += helMod[1]
 
 	return outp
-}
-
-func (d *BattleDino) Draw() {
-	rl.DrawRectangle(d.X, d.Y, d.Width, d.Height, d.Color)
-	// Draw health bar
-	healthBarWidth := d.Width
-	healthBarHeight := int32(10)
-	healthPercentage := float32(max(0, d.Health)) / float32(d.MaxHealth)
-	currentHealthBarWidth := int32(float32(healthBarWidth) * healthPercentage)
-
-	rl.DrawRectangle(d.X, d.Y-20, healthBarWidth, healthBarHeight, rl.Red)
-	rl.DrawRectangle(d.X, d.Y-20, currentHealthBarWidth, healthBarHeight, rl.Green)
 }

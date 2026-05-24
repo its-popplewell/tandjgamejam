@@ -11,14 +11,11 @@ func drawEnd(s *State) {
 	screenHeight := s.windowSize[1]
 
 	rl.ClearBackground(rl.White)
-	text := "YOU DIED"
-	fontSize := int32(60)
-
-	textWidth := rl.MeasureText(text, fontSize)
+	textWidth := rl.MeasureText(DeathText, DeathScreenFontSize)
 
 	x := (int32(screenWidth) - textWidth) / 2
-	y := (int32(screenHeight) - fontSize) / 2
+	y := (int32(screenHeight) - DeathScreenFontSize) / 2
 
-	rl.DrawText(text, x, y, fontSize, rl.Red)
+	rl.DrawText(DeathText, x, y, DeathScreenFontSize, rl.Red)
 	// SENDS TO START OR QUITS
 }

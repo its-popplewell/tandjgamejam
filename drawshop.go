@@ -24,7 +24,7 @@ func DefaultShopStyle() ShopStyle {
 		BorderColor: rl.Color{R: 60, G: 64, B: 68, A: 255},
 		BorderWidth: 2.0,
 		Roundness:   0.05,
-		NumberItems: 5,
+		NumberItems: ShopCapacity,
 	}
 }
 
@@ -62,7 +62,7 @@ func (s *ShopGui) Draw() {
 	rl.DrawRectangleRounded(s.Rect, s.Style.Roundness, segments, s.Style.BgColor)
 
 	ui.DrawRectangleCustomCorners(
-		rl.NewRectangle(s.Rect.X, s.Rect.Y, 250.0, s.Rect.Height),
+		rl.NewRectangle(s.Rect.X, s.Rect.Y, ShopGuiSideWidth, s.Rect.Height),
 		ui.DefaultButtonStyle().CornerRadius,
 		int32(32),
 		ui.CornerToggle{
@@ -79,7 +79,7 @@ func (s *ShopGui) Draw() {
 	for i := range ShopCapacity {
 		b = ui.NewButton(
 			s.Rect.X, s.Rect.Y+(float32(i)*left_bar_height),
-			250, left_bar_height,
+			ShopGuiSideWidth, left_bar_height,
 			fmt.Sprintf("Item %d", i+1),
 		)
 		b.Style.BorderWidth = 0
@@ -139,9 +139,9 @@ func drawShop(state *State) GameAction {
 		)
 		rl.DrawRectangleRec(bg, rl.Gray)
 
-		rl.DrawText("SHOP", 24, 24, 32, rl.White)
+		rl.DrawText("SHOP", ShopTitleX, ShopTitleY, ShopTitleFontSize, rl.White)
 
-		fightButton := NewButton(24, 72, 120, 42, "Fight")
+		fightButton := ui.NewButton(ShopFightButtonX, ShopFightButtonY, ShopFightButtonW, ShopFightButtonH, "Fight")
 		if fightButton.Draw() {
 			action = ActionOpenFight
 		}
@@ -151,7 +151,7 @@ func drawShop(state *State) GameAction {
 		s := NewShopGui(
 			ShopBGPadding/2, ShopBGPadding/2,
 			float32(state.windowSize[0]-(ShopBGPadding)),
-			float32(state.windowSize[1]-40),
+			float32(state.windowSize[1]-ShopGuiBottomPad),
 		)
 		s.Draw()
 
@@ -165,8 +165,8 @@ func drawShop(state *State) GameAction {
 	}
 
 	// --- Navigation Tabs ---
-	buyTab := NewButton(800-136, 24, 100, 30, "Buy")
-	equipTab := NewButton(800-246, 24, 100, 30, "Equip")
+	buyTab := ui.NewButton(float32(state.windowSize[0]-ShopBuyTabXOff), ShopTabY, ShopTabW, ShopTabH, "Buy")
+	equipTab := ui.NewButton(float32(state.windowSize[0]-ShopEquipTabXOff), ShopTabY, ShopTabW, ShopTabH, "Equip")
 
 	if buyTab.Draw() {
 		action = ActionShowBuy

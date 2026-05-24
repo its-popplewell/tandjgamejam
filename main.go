@@ -48,7 +48,7 @@ func NewState() State {
 		submode:    EMPTY,
 		player:     defaultPlayer(),
 		shop:       generateShop(),
-		windowSize: [2]int32{800, 600},
+		windowSize: [2]int32{WindowWidth, WindowHeight},
 	}
 }
 
@@ -95,10 +95,10 @@ func main() {
 
 	rl.SetConfigFlags(rl.FlagMsaa4xHint)
 
-	rl.InitWindow(game.windowSize[0], game.windowSize[1], "Dino Game")
+	rl.InitWindow(game.windowSize[0], game.windowSize[1], WindowTitle)
 	defer rl.CloseWindow()
 
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(TargetFPS)
 
 	for !rl.WindowShouldClose() {
 		update(&game)

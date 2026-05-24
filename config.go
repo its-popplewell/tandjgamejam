@@ -7,6 +7,8 @@ const (
 	WindowTitle  = "Dino Game"
 	TargetFPS    = 60
 
+	FightDemoWindowTitle = "Dino Fight Demo"
+
 	// --- Dino (shared) ---
 	DinoWidth  = 50
 	DinoHeight = 100
@@ -63,15 +65,44 @@ const (
 	DinoHealthBarYOffset = -20 // y offset above dino
 	DinoHealthBarHeight  = 10
 
+	// --- Battle screen ---
+	PlayerDinoStartXDivisor  = 4
+	EnemyDinoStartXNumerator = 3
+	EnemyDinoStartXDivisor   = 4
+	BattleResultY            = 150
+	BattleResultFontSize     = 36
+
 	// --- Stat panel ---
 	StatPanelWidth         = 220
 	StatPanelHeight        = 130
 	StatPanelPadding       = 12
 	StatPanelFontSizeLarge = 18
 	StatPanelFontSizeSmall = 16
+	StatPanelMargin        = 24
+	StatPanelTitleY        = 10
+	StatPanelHealthY       = 38
+	StatPanelHealthHeight  = 14
+	StatPanelHPTextY       = 60
+	StatPanelStatTextY     = 82
+	StatPanelSpeedTextY    = 104
+	StatPanelBlockX        = 110
 
 	// --- Shop UI ---
-	ShopBGPadding = 40
+	ShopBGPadding     = 40
+	ShopTitleX        = 24
+	ShopTitleY        = 24
+	ShopTitleFontSize = 32
+	ShopFightButtonX  = 24
+	ShopFightButtonY  = 72
+	ShopFightButtonW  = 120
+	ShopFightButtonH  = 42
+	ShopTabY          = 24
+	ShopTabW          = 100
+	ShopTabH          = 30
+	ShopBuyTabXOff    = 136
+	ShopEquipTabXOff  = 246
+	ShopGuiBottomPad  = 40
+	ShopGuiSideWidth  = 250
 
 	// --- Button ---
 	ButtonFontSize    = 20

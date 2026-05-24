@@ -13,10 +13,10 @@ type Battle struct {
 func NewBattle(playerDino Dino) Battle {
 	screenWidth := int32(rl.GetScreenWidth())
 	groundY := getGroundY()
-	dinoY := groundY - dinoHeight
+	dinoY := groundY - DinoHeight
 
-	PlayerDino := NewBattleDino(playerDino, screenWidth/4-dinoWidth/2, dinoY, 1, true)
-	EnemyDino := NewRandomBattleDino(screenWidth*3/4-dinoWidth/2, dinoY, -1, false, rl.Blue)
+	PlayerDino := NewBattleDino(playerDino, screenWidth/PlayerDinoStartXDivisor-DinoWidth/2, dinoY, 1, true)
+	EnemyDino := NewRandomBattleDino(screenWidth*EnemyDinoStartXNumerator/EnemyDinoStartXDivisor-DinoWidth/2, dinoY, -1, false, rl.Blue)
 
 	return Battle{
 		PlayerDino: PlayerDino,
@@ -78,5 +78,5 @@ func (b *Battle) resetHit() {
 }
 
 func getGroundY() int32 {
-	return int32(rl.GetScreenHeight()) - 120
+	return int32(rl.GetScreenHeight()) - GroundHeight
 }

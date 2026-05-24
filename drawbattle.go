@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	ui "tandjgamejam/UI"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
@@ -10,11 +12,11 @@ func drawBattle(b *Battle) {
 
 	rl.ClearBackground(rl.SkyBlue)
 	drawBackground(screenWidth)
-	drawStatPanel(24, 24, "PLAYER DINO", &b.PlayerDino)
-	drawStatPanel(screenWidth-244, 24, "ENEMY DINO", &b.EnemyDino)
+	drawStatPanel(StatPanelMargin, StatPanelMargin, "PLAYER DINO", &b.PlayerDino)
+	drawStatPanel(screenWidth-StatPanelWidth-StatPanelMargin, StatPanelMargin, "ENEMY DINO", &b.EnemyDino)
 
-	b.PlayerDino.Draw()
-	b.EnemyDino.Draw()
+	drawBattleDino(&b.PlayerDino)
+	drawBattleDino(&b.EnemyDino)
 
 	drawBattleResult(b)
 }
@@ -28,37 +30,31 @@ func drawBattleResult(b *Battle) {
 		message = "ENEMY WINS"
 	}
 	screenWidth := int32(rl.GetScreenWidth())
-	textWidth := rl.MeasureText(message, 36)
-	rl.DrawText(message, screenWidth/2-textWidth/2, 150, 36, rl.White)
+	textWidth := rl.MeasureText(message, BattleResultFontSize)
+	rl.DrawText(message, screenWidth/2-textWidth/2, BattleResultY, BattleResultFontSize, rl.White)
 }
 
 func drawBackground(screenWidth int32) {
 	groundY := getGroundY()
 
-	rl.DrawRectangle(0, groundY, screenWidth, 120, rl.DarkGreen)
-	rl.DrawRectangle(0, groundY+28, screenWidth, 92, rl.Brown)
+	rl.DrawRectangle(0, groundY, screenWidth, GroundHeight, rl.DarkGreen)
+	rl.DrawRectangle(0, groundY+GroundDirtY, screenWidth, GroundDirtHeight, rl.Brown)
+}
+
+func drawBattleDino(d *BattleDino) {
+	rl.DrawRectangle(d.X, d.Y, d.Width, d.Height, d.Color)
+	ui.DrawHealthBar(d.X, d.Y+DinoHealthBarYOffset, d.Width, DinoHealthBarHeight, d.Health, d.MaxHealth)
 }
 
 func drawStatPanel(x int32, y int32, label string, d *BattleDino) {
-	panelWidth := int32(220)
-	panelHeight := int32(130)
 	attack := d.getAttack()
 
-	rl.DrawRectangle(x, y, panelWidth, panelHeight, rl.Color{R: 28, G: 32, B: 36, A: 220})
-	rl.DrawRectangleLines(x, y, panelWidth, panelHeight, rl.White)
-	rl.DrawText(label, x+12, y+10, 18, rl.White)
-	drawPanelHealthBar(x+12, y+38, panelWidth-24, 14, d)
-	rl.DrawText(fmt.Sprintf("HP: %d / %d", max(0, d.Health), d.MaxHealth), x+12, y+60, 16, rl.White)
-	rl.DrawText(fmt.Sprintf("DMG: %d", attack[0]), x+12, y+82, 16, rl.White)
-	rl.DrawText(fmt.Sprintf("BLOCK: %d", attack[1]), x+110, y+82, 16, rl.White)
-	rl.DrawText(fmt.Sprintf("SPEED: %d", d.Speed), x+12, y+104, 16, rl.White)
-}
-
-func drawPanelHealthBar(x int32, y int32, width int32, height int32, d *BattleDino) {
-	healthPercentage := float32(max(0, d.Health)) / float32(d.MaxHealth)
-	currentWidth := int32(float32(width) * healthPercentage)
-
-	rl.DrawRectangle(x, y, width, height, rl.Color{R: 94, G: 38, B: 38, A: 255})
-	rl.DrawRectangle(x, y, currentWidth, height, rl.Color{R: 86, G: 201, B: 106, A: 255})
-	rl.DrawRectangleLines(x, y, width, height, rl.White)
+	rl.DrawRectangle(x, y, StatPanelWidth, StatPanelHeight, rl.Color{R: 28, G: 32, B: 36, A: 220})
+	rl.DrawRectangleLines(x, y, StatPanelWidth, StatPanelHeight, rl.White)
+	rl.DrawText(label, x+StatPanelPadding, y+StatPanelTitleY, StatPanelFontSizeLarge, rl.White)
+	ui.DrawHealthBar(x+StatPanelPadding, y+StatPanelHealthY, StatPanelWidth-2*StatPanelPadding, StatPanelHealthHeight, d.Health, d.MaxHealth)
+	rl.DrawText(fmt.Sprintf("HP: %d / %d", max(0, d.Health), d.MaxHealth), x+StatPanelPadding, y+StatPanelHPTextY, StatPanelFontSizeSmall, rl.White)
+	rl.DrawText(fmt.Sprintf("DMG: %d", attack[0]), x+StatPanelPadding, y+StatPanelStatTextY, StatPanelFontSizeSmall, rl.White)
+	rl.DrawText(fmt.Sprintf("BLOCK: %d", attack[1]), x+StatPanelBlockX, y+StatPanelStatTextY, StatPanelFontSizeSmall, rl.White)
+	rl.DrawText(fmt.Sprintf("SPEED: %d", d.Speed), x+StatPanelPadding, y+StatPanelSpeedTextY, StatPanelFontSizeSmall, rl.White)
 }
