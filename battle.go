@@ -13,10 +13,9 @@ import (
 )
 
 type Battle struct {
-	PlayerDino         BattleDino
-	EnemyDino          BattleDino
-	StartingPlayerDino Dino
-	HitTimer           int32
+	PlayerDino BattleDino
+	EnemyDino  BattleDino
+	HitTimer   int32
 }
 
 func newBattle(playerDino Dino) Battle {
@@ -28,19 +27,13 @@ func newBattle(playerDino Dino) Battle {
 	EnemyDino := newRandomBattleDino(screenWidth*3/4-dinoWidth/2, dinoY, -1, false, rl.Blue)
 
 	return Battle{
-		PlayerDino:         PlayerDino,
-		EnemyDino:          EnemyDino,
-		StartingPlayerDino: playerDino,
-		HitTimer:           0,
+		PlayerDino: PlayerDino,
+		EnemyDino:  EnemyDino,
+		HitTimer:   0,
 	}
 }
 
 func (battle *Battle) Update() {
-	if rl.IsKeyPressed(rl.KeyR) || restartButtonPressed() {
-		*battle = newBattle(battle.StartingPlayerDino)
-		return
-	}
-
 	// end battle if a dino is dead (health <= 0)
 	if battle.PlayerDino.Health <= 0 || battle.EnemyDino.Health <= 0 {
 		return
@@ -58,6 +51,10 @@ func (battle *Battle) Update() {
 	if rl.CheckCollisionRecs(battle.PlayerDino.Bounds(), battle.EnemyDino.Bounds()) && battle.HitTimer <= 0 {
 		battle.Hit()
 	}
+}
+
+func (battle Battle) IsOver() bool {
+	return battle.PlayerDino.Health <= 0 || battle.EnemyDino.Health <= 0
 }
 
 func (battle *Battle) Hit() {
@@ -95,7 +92,6 @@ func (b Battle) Draw() {
 	drawBackground(screenWidth)
 	drawStatPanel(24, 24, "PLAYER DINO", b.PlayerDino)
 	drawStatPanel(screenWidth-244, 24, "ENEMY DINO", b.EnemyDino)
-	drawRestartButton()
 
 	b.PlayerDino.Draw()
 	b.EnemyDino.Draw()
@@ -107,7 +103,6 @@ func (b Battle) Draw() {
 		}
 		textWidth := rl.MeasureText(message, 36)
 		rl.DrawText(message, screenWidth/2-textWidth/2, 150, 36, rl.White)
-		rl.DrawText("Press R or click Restart", screenWidth/2-120, 192, 20, rl.White)
 	}
 }
 
@@ -144,30 +139,4 @@ func drawPanelHealthBar(x int32, y int32, width int32, height int32, d BattleDin
 	rl.DrawRectangle(x, y, width, height, rl.Color{R: 94, G: 38, B: 38, A: 255})
 	rl.DrawRectangle(x, y, currentWidth, height, rl.Color{R: 86, G: 201, B: 106, A: 255})
 	rl.DrawRectangleLines(x, y, width, height, rl.White)
-}
-
-func drawRestartButton() {
-	button := restartButtonBounds()
-	color := rl.Color{R: 45, G: 51, B: 58, A: 255}
-	if rl.CheckCollisionPointRec(rl.GetMousePosition(), button) {
-		color = rl.Color{R: 65, G: 74, B: 84, A: 255}
-	}
-
-	rl.DrawRectangleRec(button, color)
-	rl.DrawRectangleLines(int32(button.X), int32(button.Y), int32(button.Width), int32(button.Height), rl.White)
-	rl.DrawText("Restart", int32(button.X)+18, int32(button.Y)+10, 20, rl.White)
-}
-
-func restartButtonPressed() bool {
-	return rl.IsMouseButtonPressed(rl.MouseLeftButton) &&
-		rl.CheckCollisionPointRec(rl.GetMousePosition(), restartButtonBounds())
-}
-
-func restartButtonBounds() rl.Rectangle {
-	return rl.Rectangle{
-		X:      float32(rl.GetScreenWidth()/2 - 60),
-		Y:      24,
-		Width:  120,
-		Height: 42,
-	}
 }

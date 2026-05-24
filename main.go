@@ -1,34 +1,63 @@
 package main
 
 import (
-	// "fmt";
-	rl "github.com/gen2brain/raylib-go/raylib";
+	// "fmt"
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
+
+const (
+	modeStart = "START"
+	modeShop  = "SHOP"
+	modeFight = "FIGHT"
+	modeEnd   = "END"
+
+	submodeBuy          = "BUY"
+	submodeFightReady   = "READY"
+	submodeFightRunning = "RUNNING"
+	submodeFightResult  = "RESULT"
 )
 
 type State struct {
-	mode string
+	mode    string
 	submode string
-	player Player
-	shop Shop
+	player  Player
+	shop    Shop
+	battle  *Battle
 }
 
 func newState() State {
 	return State{
-		mode: "START",
+		mode:   modeStart,
 		player: defaultPlayer(),
-		shop: generateShop(),
+		shop:   generateShop(),
 	}
 }
 
 func (self *State) updateState(newMode string) bool {
-	if (self.mode == "START") {
-
-	} else if (self.mode == "END") {
-
-	} else if (self.mode == "SHOP") {
-
-	} else if (self.mode == "FIGHT") {
-
+	if self.mode == modeStart {
+		if newMode != modeShop {
+			return false
+		}
+		self.submode = submodeBuy
+	} else if self.mode == modeEnd {
+		return false
+	} else if self.mode == modeShop {
+		if newMode != modeFight {
+			return false
+		}
+		battle := newBattle(self.player.dino)
+		self.battle = &battle
+		self.submode = submodeFightReady
+	} else if self.mode == modeFight {
+		if newMode == modeEnd {
+			self.battle = nil
+			self.submode = ""
+		} else if newMode == modeShop {
+			self.battle = nil
+			self.submode = submodeBuy
+		} else {
+			return false
+		}
 	}
 	self.mode = newMode
 	return true
@@ -50,14 +79,14 @@ func main() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 
-		if game.mode == "START" {
+		if game.mode == modeStart {
 			// display title screen
 			// wait for start button selected
 
-			game.updateState("SHOP")
+			game.updateState(modeShop)
 
 			// SEND TO SHOP
-		} else if game.mode == "SHOP" {
+		} else if game.mode == modeShop {
 			// buy or sell
 			// equpt and upgrade and whatnot
 
@@ -65,7 +94,7 @@ func main() {
 
 			// fmt.Printf("%+v\n", game.shop.inventory)
 			// SENDS TO FIGHT
-		} else if game.mode == "FIGHT" {
+		} else if game.mode == modeFight {
 			// go to battle screen
 			// run fight
 			// if player wins fight then they can go either to shop (heal and plus hits)
@@ -75,10 +104,10 @@ func main() {
 			// if lose:
 			// send to end
 
-			rl.ClearBackground(rl.Yellow)
+			drawFight(&game)
 
 			// SEND TO SHOP OR FIGHT OR END
-		} else if game.mode == "END" {
+		} else if game.mode == modeEnd {
 			// Show death screen
 			// Allow restart back to start
 			screenWidth := rl.GetScreenWidth()
@@ -99,7 +128,6 @@ func main() {
 
 		rl.EndDrawing()
 	}
-
 
 	// for continueGame {
 	// 	if game.mode == "START" {

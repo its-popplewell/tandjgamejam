@@ -26,16 +26,17 @@ type Dino struct {
 	Helmet    Helmet
 }
 
+// battleDino is a copy of the persistent dino with additional fields for the battle
 type BattleDino struct {
 	Dino
 	X              int32
 	Y              int32
 	Width          int32
 	Height         int32
-	Speed          int32
+	Speed          int32 // at some point this might become a persistent stat on the dino
 	Direction      int32
 	isPlayer       bool
-	KnockbackTimer int32
+	KnockbackTimer int32 // how long the "knockback" is applied, i.e. how long they run backwards before they run forwards (in frames)
 }
 
 func newRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color rl.Color) BattleDino {
@@ -52,7 +53,7 @@ func newRandomBattleDino(x int32, y int32, direction int32, isPlayer bool, color
 		Y:         y,
 		Width:     dinoWidth,
 		Height:    dinoHeight,
-		Speed:     1,
+		Speed:     2,
 		Direction: direction,
 		isPlayer:  isPlayer,
 	}
@@ -65,7 +66,7 @@ func newBattleDino(dino Dino, x int32, y int32, direction int32, isPlayer bool) 
 		Y:         y,
 		Width:     dinoWidth,
 		Height:    dinoHeight,
-		Speed:     1,
+		Speed:     2,
 		Direction: direction,
 		isPlayer:  isPlayer,
 	}
